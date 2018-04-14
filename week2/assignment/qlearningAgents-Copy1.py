@@ -39,7 +39,6 @@ class QLearningAgent(ReinforcementAgent):
     """
       Returns Q(state,action)
     """
-    state = extractStateFeatures(state)
     return self._qValues[state][action]
 
   def setQValue(self,state,action,value):
@@ -55,7 +54,7 @@ class QLearningAgent(ReinforcementAgent):
       Returns max_action Q(state,action)
       where the max is over legal actions.
     """
-    state = extractStateFeatures(state)
+    
     possibleActions = self.getLegalActions(state)
     #If there are no legal actions, return 0.0
     if len(possibleActions) == 0:
@@ -68,7 +67,6 @@ class QLearningAgent(ReinforcementAgent):
       Compute the best action to take in a state. 
       
     """
-    state = extractStateFeatures(state)
     possibleActions = self.getLegalActions(state)
 
     #If there are no legal actions, return None
@@ -89,7 +87,7 @@ class QLearningAgent(ReinforcementAgent):
       HINT: To pick randomly from a list, use random.choice(list)
 
     """
-    state = extractStateFeatures(state)
+    
     # Pick Action
     possibleActions = self.getLegalActions(state)
     action = None
@@ -116,7 +114,6 @@ class QLearningAgent(ReinforcementAgent):
 
 
     """
-    state = extractStateFeatures(state)
     #agent parameters
     gamma = self.discount
     learning_rate = self.alpha
@@ -127,23 +124,6 @@ class QLearningAgent(ReinforcementAgent):
     self.setQValue(state,action,updated_qvalue)
 
 
-    
-def extractStateFeatures(state):
-    pacman_pos = state.getPacmanPosition()
-    lt_wall = state.hasWall(pacman_pos[0]-1, pacman_pos[1]+1)
-    ct_wall = state.hasWall(pacman_pos[0], pacman_pos[1]+1)
-    rt_wall = state.hasWall(pacman_pos[0]+1, pacman_pos[1]+1)
-    lc_wall = state.hasWall(pacman_pos[0]-1, pacman_pos[1])
-    rc_wall = state.hasWall(pacman_pos[0]+1, pacman_pos[1])
-    lb_wall = state.hasWall(pacman_pos[0]-1, pacman_pos[1]-1)
-    cb_wall = state.hasWall(pacman_pos[0], pacman_pos[1]-1)
-    rb_wall = state.hasWall(pacman_pos[0]+1, pacman_pos[1]-1)
-    
-    ghost1, ghost2 = state.getGhostPositions()
-    
-    return (pacman_pos[0], pacman_pos[1], lt_wall, ct_wall, rt_wall, lc_wall, rc_wall, lb_wall, cb_wall, rb_wall, 
-            ghost1[0], ghost1[1], ghost2[0], ghost2[1])
-    
 #---------------------#end of your code#---------------------#
 
 

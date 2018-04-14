@@ -54,14 +54,12 @@ class QLearningAgent():
       Returns max_action Q(state,action)
       where the max is over legal actions.
     """
-    
     possibleActions = self.getLegalActions(state)
     #If there are no legal actions, return 0.0
     if len(possibleActions) == 0:
     	return 0.0
 
-    "*** YOUR CODE HERE ***"
-    return <compute state value>
+    return max([self.getQValue(state, action) for action in possibleActions])
     
   def getPolicy(self, state):
     """
@@ -74,10 +72,7 @@ class QLearningAgent():
     if len(possibleActions) == 0:
     	return None
     
-    best_action = None
-
-    "*** YOUR CODE HERE ***"
-    best_action = <your code>
+    best_action = max(possibleActions, key=lambda action: self.getQValue(state, action))
     return best_action
 
   def getAction(self, state):
@@ -91,7 +86,6 @@ class QLearningAgent():
       HINT: To pick randomly from a list, use random.choice(list)
 
     """
-    
     # Pick Action
     possibleActions = self.getLegalActions(state)
     action = None
@@ -103,9 +97,11 @@ class QLearningAgent():
     #agent parameters:
     epsilon = self.epsilon
 
-    "*** YOUR CODE HERE ***"
-    
-    return <put agent's action here>
+    if random.random() < epsilon:
+        action = random.choice(possibleActions)
+    else:
+        action = self.getPolicy(state)
+    return action
 
   def update(self, state, action, nextState, reward):
     """
@@ -120,10 +116,9 @@ class QLearningAgent():
     gamma = self.discount
     learning_rate = self.alpha
     
-    "*** YOUR CODE HERE ***"    
-    reference_qvalue = <the "correct state value", uses reward and the value of next state>
-    
-    updated_qvalue = (1-learning_rate) * self.getQValue(state,action) + learning_rate * reference_qvalue
+    reference_qvalue = reward + gamma*self.getValue(nextState)
+    updated_qvalue = (1 - learning_rate)*self.getQValue(state, action) + learning_rate*reference_qvalue
+
     self.setQValue(state,action,updated_qvalue)
 
 
