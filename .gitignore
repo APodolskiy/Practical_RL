@@ -75,3 +75,10 @@ debian/reproducible-experiment-platform
 debian/files
 *.substvars
 *.debhelper.log
+
+/week1
+/week2
+/week3
+/week4
+/week5
+/week6
